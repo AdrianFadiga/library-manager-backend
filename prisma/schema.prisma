@@ -13,7 +13,8 @@ datasource db {
 model User {
   id String @id @default(uuid())
   name String @db.VarChar(50)
-  email String @db.VarChar(50)
+  email String @db.VarChar(50) @unique
+  password String @db.VarChar(50)
   role String @db.VarChar(10) @default("user")
 
   bookings Booking[]
@@ -25,13 +26,23 @@ model User {
 model Book {
   id String @id @default(uuid())
   title String @db.VarChar(35)
-  category String @db.VarChar(35)
+  category Category @relation(fields: [categoryId], references: [id])
+  categoryId Int @map("category_id")
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 
-  booking Booking[]
+  bookingHistory Booking[]
 
   @@map("books")
+}
+
+model Category {
+  id Int @id @default(autoincrement())
+  category String @db.VarChar(30)
+
+  bookCategory Book[]
+
+  @@map("categories")
 }
 
 model Booking {
@@ -39,6 +50,9 @@ model Booking {
   userId String @map("user_id")
   book Book @relation(fields: [bookId], references: [id])
   bookId String @map("book_id")
+  bookingDate DateTime @default(now()) @map("booking_date")
+  returnDate DateTime @default(now()) @map("return_date")
+  status String @db.VarChar() @default("avaliable")
 
   @@id([userId, bookId])
   @@map("bookings")
