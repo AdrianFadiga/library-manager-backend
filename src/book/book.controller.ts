@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   Query,
+  BadRequestException,
 } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { JwtGuard } from 'src/auth/guard';
@@ -37,16 +38,17 @@ export class BookController {
 
   @Get('/filter')
   findOne(
-    @Query('categoryId') categoryId: string,
     @Query('title') title: string,
+    @Query('categoryId') categoryId: string,
   ) {
     if (title) return this.bookService.findByTitle(title);
-    return this.bookService.findByCategoryId(+categoryId);
+    if (categoryId) return this.bookService.findByCategoryId(+categoryId);
+    throw new BadRequestException('Filter parameter is missing');
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateBookDto: UpdateBookDto) {
-    // return this.bookService.update(+id, updateBookDto);
+    return this.bookService.update(id, updateBookDto);
   }
 
   @Delete(':id')

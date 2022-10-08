@@ -25,8 +25,8 @@ export class BookModel {
   }
 
   async findByTitle(title: string) {
-    return this.databaseService.book.findFirst({
-      where: { title },
+    return this.databaseService.book.findMany({
+      where: { title: { contains: title, mode: 'insensitive' } },
     });
   }
 

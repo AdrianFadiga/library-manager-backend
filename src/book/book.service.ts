@@ -15,8 +15,12 @@ export class BookService {
 
   async create(role: string, createBookDto: CreateBookDto) {
     if (role !== 'admin') throw new UnauthorizedException();
+    // Fiz esta lógica para não permitir que dois livros
+    // com o mesmo título sejam cadastrados.
+    // Para permitir, basta comentar as duas linhas abaixo
     const alreadyRegistered = await this.findByTitle(title);
     if (alreadyRegistered) throw new ConflictException();
+    // Fazer a validação se a categoria é existente
     return this.bookModel.create(createBookDto);
   }
 
