@@ -6,7 +6,7 @@ import { GetUser } from 'src/decorators';
 import { User } from '@prisma/client';
 
 @UseGuards(JwtGuard)
-@Controller('user')
+@Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
