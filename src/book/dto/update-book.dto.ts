@@ -1,4 +1,4 @@
-import { IsNumber, IsOptional, IsString, MaxLength } from 'class-validator';
+import { IsOptional, IsString, MaxLength } from 'class-validator';
 
 export class UpdateBookDto {
   @IsOptional()
@@ -7,6 +7,6 @@ export class UpdateBookDto {
   title: string;
 
   @IsOptional()
-  @IsNumber()
-  categoryId: number;
+  @IsString()
+  categoryId: string;
 }

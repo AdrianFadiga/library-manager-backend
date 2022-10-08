@@ -42,7 +42,7 @@ export class BookController {
     @Query('categoryId') categoryId: string,
   ) {
     if (title) return this.bookService.findByTitle(title);
-    if (categoryId) return this.bookService.findByCategoryId(+categoryId);
+    if (categoryId) return this.bookService.findByCategoryId(categoryId);
     throw new BadRequestException('Filter parameter is missing');
   }
 

@@ -1,4 +1,4 @@
-import { IsDefined, IsNumber, IsString, MaxLength } from 'class-validator';
+import { IsDefined, IsString, MaxLength } from 'class-validator';
 
 export class CreateBookDto {
   @IsString()
@@ -6,6 +6,6 @@ export class CreateBookDto {
   @MaxLength(100)
   title: string;
 
-  @IsNumber()
-  categoryId: number;
+  @IsString()
+  categoryId: string;
 }
