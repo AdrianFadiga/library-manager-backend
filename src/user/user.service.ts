@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserModel } from './user.model';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -13,6 +14,7 @@ export class UserService {
   async create(role: string, createUserDto: CreateUserDto) {
     if (role !== 'admin') throw new UnauthorizedException();
     await this.verifyEmailInUse(createUserDto.email);
+    createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
     return this.userModel.create(createUserDto);
   }
 
