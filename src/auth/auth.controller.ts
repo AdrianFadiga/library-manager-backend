@@ -7,7 +7,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('/signin')
-  signIn(@Body() authDto: AuthDto) {
+  async signIn(@Body() authDto: AuthDto) {
     return this.authService.signIn(authDto);
   }
 }
