@@ -1,26 +1,48 @@
-import { Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
+import { title } from 'process';
+import { BookModel } from './book.model';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 
 @Injectable()
 export class BookService {
-  create(createBookDto: CreateBookDto) {
-    return 'This action adds a new book';
+  constructor(private bookModel: BookModel) {}
+
+  async create(role: string, createBookDto: CreateBookDto) {
+    if (role !== 'admin') throw new UnauthorizedException();
+    const alreadyRegistered = await this.findByTitle(title);
+    if (alreadyRegistered) throw new ConflictException();
+    return this.bookModel.create(createBookDto);
   }
 
-  findAll() {
-    return `This action returns all book`;
+  async findAll() {
+    // Paginação
+    return this.bookModel.findAll();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} book`;
+  async findByTitle(title: string) {
+    const book = await this.bookModel.findByTitle(title);
+    if (!book) throw new NotFoundException();
+    return book;
   }
 
-  update(id: number, updateBookDto: UpdateBookDto) {
-    return `This action updates a #${id} book`;
+  async findByCategoryId(categoryId: number) {
+    const book = await this.bookModel.findByCategoryId(categoryId);
+    // Validar a categoria
+    if (!book.length) throw new NotFoundException();
+    return book;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} book`;
+  update(id: string, updateBookDto: UpdateBookDto) {
+    return this.bookModel.update(id, updateBookDto);
+  }
+
+  delete(id: string) {
+    return this.bookModel.delete(id);
   }
 }

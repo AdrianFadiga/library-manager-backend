@@ -13,7 +13,7 @@ export class BookModel {
   }
 
   async findAll() {
-    return this.databaseService.book.findMany({});
+    return this.databaseService.book.findMany();
   }
 
   async findById(id: string) {
@@ -24,11 +24,15 @@ export class BookModel {
     });
   }
 
-  async findOne(categoryId: number, title: string) {
+  async findByTitle(title: string) {
     return this.databaseService.book.findFirst({
-      where: {
-        OR: [{ categoryId }, { title }],
-      },
+      where: { title },
+    });
+  }
+
+  async findByCategoryId(categoryId: number) {
+    return this.databaseService.book.findMany({
+      where: { categoryId },
     });
   }
 
