@@ -25,7 +25,7 @@ async function main() {
         data: { ...option },
       });
     }
-  }, 200);
+  }, 1000);
 }
 
 main()
