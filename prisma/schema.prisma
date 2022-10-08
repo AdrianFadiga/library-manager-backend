@@ -19,7 +19,7 @@ model User {
 
   bookings Booking[]
 
-  @@map("user")
+  @@map("users")
 }
 
 
@@ -28,8 +28,8 @@ model Book {
   title String @db.VarChar(35)
   category Category @relation(fields: [categoryId], references: [id])
   categoryId Int @map("category_id")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
 
   bookingHistory Booking[]
 
