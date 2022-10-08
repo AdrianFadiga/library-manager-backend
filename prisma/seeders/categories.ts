@@ -11,6 +11,18 @@ async function main() {
       id: 2,
       category: 'Suspense',
     },
+    {
+      id: 3,
+      category: 'Crônica',
+    },
+    {
+      id: 4,
+      category: 'Biografia',
+    },
+    {
+      id: 5,
+      category: 'Poesia',
+    },
   ];
 
   for (const option of options) {
