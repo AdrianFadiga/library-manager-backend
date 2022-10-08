@@ -24,6 +24,12 @@ export class BookService {
     return this.bookModel.create(createBookDto);
   }
 
+  async findOne(id: string) {
+    const book = await this.bookModel.findOne(id);
+    if (!book) throw new NotFoundException();
+    return book;
+  }
+
   async findAll() {
     // Paginação
     return this.bookModel.findAll();
@@ -35,7 +41,7 @@ export class BookService {
     return book;
   }
 
-  async findByCategoryId(categoryId: number) {
+  async findByCategoryId(categoryId: string) {
     const book = await this.bookModel.findByCategoryId(categoryId);
     // Validar a categoria
     if (!book.length) throw new NotFoundException();

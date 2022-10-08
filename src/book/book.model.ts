@@ -16,7 +16,7 @@ export class BookModel {
     return this.databaseService.book.findMany();
   }
 
-  async findById(id: string) {
+  async findOne(id: string) {
     return this.databaseService.book.findUnique({
       where: {
         id,
@@ -30,7 +30,7 @@ export class BookModel {
     });
   }
 
-  async findByCategoryId(categoryId: number) {
+  async findByCategoryId(categoryId: string) {
     return this.databaseService.book.findMany({
       where: { categoryId },
     });

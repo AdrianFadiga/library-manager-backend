@@ -6,14 +6,14 @@ async function main() {
     {
       id: '73fca9f3-8f89-4fa9-ad25-3a7d160ccfbc',
       title: 'O Conde de Monte Cristo',
-      categoryId: 1,
+      categoryId: '9837c100-9021-4f97-9ef6-8ec5fa35ba14',
       createdAt: new Date(),
       updatedAt: new Date(),
     },
     {
       id: 'e243499f-070a-4470-a70d-72fb3ab6b1d5',
       title: 'It - A Coisa',
-      categoryId: 2,
+      categoryId: 'db6c44ae-605f-484b-885c-fa610e6802e',
       createdAt: new Date(),
       updatedAt: new Date(),
     },
