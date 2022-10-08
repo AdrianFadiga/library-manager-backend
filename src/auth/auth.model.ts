@@ -14,4 +14,11 @@ export class AuthModel {
     });
     return user;
   }
+
+  async findByEmail(email: string) {
+    const user = await this.databaseService.user.findFirst({
+      where: { email },
+    });
+    return user;
+  }
 }
