@@ -4,24 +4,24 @@ import { prisma } from '../prismaClient';
 async function main() {
   const options: Category[] = [
     {
-      id: 1,
+      id: '9837c100-9021-4f97-9ef6-8ec5fa35ba14',
       category: 'Romance',
     },
     {
-      id: 2,
+      id: 'db6c44ae-605f-484b-885c-fa610e6802e',
       category: 'Suspense',
     },
     {
-      id: 3,
-      category: 'Crônica',
+      id: '001d33fb-39af-45fb-847e-a3dbac9054c5',
+      category: 'Poesia',
     },
     {
-      id: 4,
+      id: '083f014b-59f4-4057-bc8f-561d89546342',
       category: 'Biografia',
     },
     {
-      id: 5,
-      category: 'Poesia',
+      id: 'a2618872-7105-4250-acc3-9a0c538e2cb3',
+      category: 'Comédia',
     },
   ];
 
