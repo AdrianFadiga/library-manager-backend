@@ -14,7 +14,7 @@ model User {
   id String @id @default(uuid())
   name String @db.VarChar(50)
   email String @db.VarChar(50) @unique
-  password String @db.VarChar(50)
+  password String @db.VarChar(100)
   role String @db.VarChar(10) @default("user")
 
   bookings Booking[]
