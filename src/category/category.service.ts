@@ -1,5 +1,7 @@
 import {
   ConflictException,
+  forwardRef,
+  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -11,6 +13,7 @@ import { CategoryDto } from './dto';
 export class CategoryService {
   constructor(
     private categoryModel: CategoryModel,
+    @Inject(forwardRef(() => BookService))
     private bookService: BookService,
   ) {}
 
@@ -32,7 +35,7 @@ export class CategoryService {
 
   async findOne(id: string) {
     const category = await this.categoryModel.findOne(id);
-    if (!category) throw new NotFoundException();
+    if (!category) throw new NotFoundException('Inexistent category');
     return category;
   }
 
@@ -44,7 +47,7 @@ export class CategoryService {
 
   async remove(id: string) {
     const registeredBook = await this.bookService.findByCategoryId(id);
-    if (registeredBook)
+    if (registeredBook.length >= 1)
       throw new ConflictException(
         'There are books registered in this category',
       );
