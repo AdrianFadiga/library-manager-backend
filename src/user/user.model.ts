@@ -17,4 +17,10 @@ export class UserModel {
       where: { email },
     });
   }
+
+  async findOne(id: string) {
+    return this.databaseService.user.findUnique({
+      where: { id },
+    });
+  }
 }
