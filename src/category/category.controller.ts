@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  HttpCode,
 } from '@nestjs/common';
 import { JwtGuard } from 'src/auth/guard';
 import { CategoryService } from './category.service';
@@ -43,7 +44,8 @@ export class CategoryController {
   }
 
   @Delete('/:id')
-  remove(@Param('id') id: string) {
-    return this.categoryService.remove(id);
+  @HttpCode(204)
+  async remove(@Param('id') id: string) {
+    await this.categoryService.remove(id);
   }
 }

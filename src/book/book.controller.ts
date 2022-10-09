@@ -12,6 +12,7 @@ import {
   UploadedFile,
   ParseFilePipeBuilder,
   UseInterceptors,
+  HttpCode,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { User } from '@prisma/client';
@@ -94,7 +95,8 @@ export class BookController {
   }
 
   @Delete(':id')
-  remove(@GetUser() { role }: User, @Param('id') id: string) {
-    return this.bookService.remove(id, role);
+  @HttpCode(204)
+  async remove(@GetUser() { role }: User, @Param('id') id: string) {
+    await this.bookService.remove(id, role);
   }
 }

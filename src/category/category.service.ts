@@ -54,6 +54,9 @@ export class CategoryService {
   }
 
   async remove(id: string) {
+    const category = await this.categoryRepository.findOne(id);
+    if (!category) throw new NotFoundException('Inexistent category');
+
     const registeredBook = await this.bookRepository.findByCategoryId(id);
     if (registeredBook.length >= 1)
       throw new ConflictException(
