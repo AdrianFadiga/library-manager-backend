@@ -5,52 +5,61 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { BookService } from 'src/book/book.service';
-import { CategoryModel } from './category.model';
+import { BookRepository } from 'src/book/book.repository';
+import { CategoryRepository } from './category.repository';
 import { CategoryDto } from './dto';
 
 @Injectable()
 export class CategoryService {
   constructor(
-    private categoryModel: CategoryModel,
-    @Inject(forwardRef(() => BookService))
-    private bookService: BookService,
+    private categoryRepository: CategoryRepository,
+    @Inject(forwardRef(() => BookRepository))
+    private bookRepository: BookRepository,
   ) {}
 
-  async create({ category }: CategoryDto) {
-    await this.verifyAlreadyRegistered(category);
-    return this.categoryModel.create(category);
-  }
-
   private async verifyAlreadyRegistered(category: string) {
-    const alreadyRegistered = await this.categoryModel.findByCategory(category);
+    const alreadyRegistered = await this.categoryRepository.findByCategory(
+      category,
+    );
     if (alreadyRegistered) {
       throw new ConflictException('Category already registered');
     }
   }
 
+  async create({ category }: CategoryDto) {
+    await this.verifyAlreadyRegistered(category);
+
+    const newCategory = await this.categoryRepository.create(category);
+    return newCategory;
+  }
+
   async findAll() {
-    return this.categoryModel.findAll();
+    const categories = await this.categoryRepository.findAll();
+    return categories;
   }
 
   async findOne(id: string) {
-    const category = await this.categoryModel.findOne(id);
+    const category = await this.categoryRepository.findOne(id);
     if (!category) throw new NotFoundException('Inexistent category');
+
     return category;
   }
 
   async update(id: string, { category }: CategoryDto) {
-    const registeredCategory = await this.categoryModel.findOne(id);
-    if (!registeredCategory) throw new NotFoundException();
-    return this.categoryModel.update(id, category);
+    const registeredCategory = await this.categoryRepository.findOne(id);
+    if (!registeredCategory) throw new NotFoundException('Inexistent category');
+
+    const updatedCategory = await this.categoryRepository.update(id, category);
+    return updatedCategory;
   }
 
   async remove(id: string) {
-    const registeredBook = await this.bookService.findByCategoryId(id);
+    const registeredBook = await this.bookRepository.findByCategoryId(id);
     if (registeredBook.length >= 1)
       throw new ConflictException(
         'There are books registered in this category',
       );
-    return this.categoryModel.delete(id);
+
+    return this.categoryRepository.delete(id);
   }
 }
