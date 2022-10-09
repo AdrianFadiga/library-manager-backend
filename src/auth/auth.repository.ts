@@ -12,6 +12,7 @@ export class AuthRepository {
         AND: [{ email: authDto.email }, { password: authDto.password }],
       },
     });
+
     return user;
   }
 
@@ -19,6 +20,7 @@ export class AuthRepository {
     const user = await this.databaseService.user.findFirst({
       where: { email },
     });
+
     return user;
   }
 }
