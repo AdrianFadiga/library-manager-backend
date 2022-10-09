@@ -16,6 +16,6 @@ import { MulterModule } from '@nestjs/platform-express';
   ],
   controllers: [BookController],
   providers: [BookService, BookRepository],
-  exports: [BookService, BookRepository],
+  exports: [BookRepository],
 })
 export class BookModule {}
