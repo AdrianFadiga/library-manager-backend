@@ -8,7 +8,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { CategoryService } from 'src/category/category.service';
-import { BookModel } from './book.model';
+import { BookRepository } from './book.repository';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import * as fs from 'fs';
@@ -19,7 +19,7 @@ import 'dotenv/config';
 @Injectable()
 export class BookService {
   constructor(
-    private bookModel: BookModel,
+    private bookRepository: BookRepository,
     @Inject(forwardRef(() => CategoryService))
     private categoryService: CategoryService,
   ) {}
@@ -33,7 +33,7 @@ export class BookService {
     await this.verifyTitleInUse(createBookDto.title);
     await this.categoryService.findOne(createBookDto.categoryId);
     const imageUrl = await this.uploadImage(file);
-    return this.bookModel.create(createBookDto, imageUrl);
+    return this.bookRepository.create(createBookDto, imageUrl);
   }
 
   private async verifyTitleInUse(title: string) {
@@ -43,23 +43,23 @@ export class BookService {
   }
 
   async findOne(id: string) {
-    const book = await this.bookModel.findOne(id);
+    const book = await this.bookRepository.findOne(id);
     if (!book) throw new NotFoundException('Book not found');
     return book;
   }
 
   async findAll() {
     // Paginação
-    return this.bookModel.findAll();
+    return this.bookRepository.findAll();
   }
 
   async findByTitle(title: string) {
-    const book = await this.bookModel.findByTitle(title);
+    const book = await this.bookRepository.findByTitle(title);
     return book;
   }
 
   async findByCategoryId(categoryId: string) {
-    const book = await this.bookModel.findByCategoryId(categoryId);
+    const book = await this.bookRepository.findByCategoryId(categoryId);
     await this.categoryService.findOne(categoryId);
     return book;
   }
@@ -77,13 +77,13 @@ export class BookService {
     if (categoryId) await this.categoryService.findOne(categoryId);
     let imageUrl = undefined;
     if (file) imageUrl = await this.uploadImage(file);
-    return this.bookModel.update(id, updateBookDto, imageUrl);
+    return this.bookRepository.update(id, updateBookDto, imageUrl);
   }
 
   async remove(id: string, role: string) {
     if (role !== 'admin') throw new UnauthorizedException();
     await this.findOne(id);
-    return this.bookModel.remove(id);
+    return this.bookRepository.remove(id);
   }
 
   private async uploadImage(file: Express.Multer.File) {

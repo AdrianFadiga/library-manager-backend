@@ -1,7 +1,7 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { BookService } from './book.service';
 import { BookController } from './book.controller';
-import { BookModel } from './book.model';
+import { BookRepository } from './book.repository';
 import { CategoryModule } from '../category/category.module';
 import { MulterModule } from '@nestjs/platform-express';
 
@@ -15,7 +15,7 @@ import { MulterModule } from '@nestjs/platform-express';
     }),
   ],
   controllers: [BookController],
-  providers: [BookService, BookModel],
-  exports: [BookService],
+  providers: [BookService, BookRepository],
+  exports: [BookService, BookRepository],
 })
 export class BookModule {}

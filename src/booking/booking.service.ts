@@ -5,21 +5,24 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { BookService } from 'src/book/book.service';
-import { UserService } from 'src/user/user.service';
-import { BookingModel } from './booking.model';
+import { BookRepository } from 'src/book/book.repository';
+import { UserRepository } from 'src/user/user.repository';
+import { BookingRepository } from './booking.repository';
 import { CreateBookingDto } from './dto/create-booking.dto';
 
 @Injectable()
 export class BookingService {
   constructor(
-    private bookingModel: BookingModel,
-    private userService: UserService,
-    private bookService: BookService,
+    private bookingRepository: BookingRepository,
+    private userRepository: UserRepository,
+    private bookRepository: BookRepository,
   ) {}
 
   private async verifyBooked(bookId: string) {
-    const isBooked = await this.bookingModel.findByBookId(bookId, 'active');
+    const isBooked = await this.bookingRepository.findByBookId(
+      bookId,
+      'active',
+    );
     if (isBooked.length) {
       throw new ConflictException('The book is currently booked');
     }
@@ -28,10 +31,12 @@ export class BookingService {
   async create(createBookingDto: CreateBookingDto) {
     // apenas usuario comum pode ser titular de reserva
     const { userId, bookId } = createBookingDto;
-    await this.userService.findOne(userId);
-    await this.bookService.findOne(bookId);
+    const user = await this.userRepository.findOne(userId);
+    if (!user) throw new NotFoundException('User not found');
+    const book = await this.bookRepository.findOne(bookId);
+    if (!book) throw new NotFoundException('Book not found');
     await this.verifyBooked(bookId);
-    return this.bookingModel.create(createBookingDto);
+    return this.bookingRepository.create(createBookingDto);
   }
 
   findAll() {
@@ -46,17 +51,17 @@ export class BookingService {
     if (status !== 'active' && status !== 'finished') {
       throw new BadRequestException('Status must be "active" or "finished"');
     }
-    await this.userService.findOne(id);
-    return this.bookingModel.findByUserId(id, status);
+    await this.userRepository.findOne(id);
+    return this.bookingRepository.findByUserId(id, status);
   }
 
   async update(id: string, role: string) {
     if (role !== 'admin') throw new UnauthorizedException();
-    const booking = await this.bookingModel.findOne(id);
+    const booking = await this.bookingRepository.findOne(id);
     if (!booking) throw new NotFoundException();
     if (booking.status !== 'active') {
       throw new BadRequestException('Booking already finished');
     }
-    return this.bookingModel.update(id);
+    return this.bookingRepository.update(id);
   }
 }

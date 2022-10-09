@@ -3,7 +3,7 @@ import { DatabaseService } from 'src/database/database.service';
 import { CreateBookingDto } from './dto/create-booking.dto';
 
 @Injectable()
-export class BookingModel {
+export class BookingRepository {
   constructor(private databaseService: DatabaseService) {}
 
   async create(createBookingDto: CreateBookingDto) {
