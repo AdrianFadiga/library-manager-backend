@@ -47,14 +47,14 @@ model Category {
 }
 
 model Booking {
+  id String @id @default(uuid())
   user User @relation(fields: [userId], references: [id])
   userId String @map("user_id")
   book Book @relation(fields: [bookId], references: [id], onDelete: Cascade)
   bookId String @map("book_id")
   bookingDate DateTime @default(now()) @map("booking_date")
-  returnDate DateTime @default(now()) @map("return_date")
-  status String @db.VarChar() @default("avaliable")
+  returnDate DateTime? @map("return_date")
+  status String @db.VarChar() @default("active")
 
-  @@id([userId, bookId])
   @@map("bookings")
 }

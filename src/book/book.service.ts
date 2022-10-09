@@ -44,7 +44,7 @@ export class BookService {
 
   async findOne(id: string) {
     const book = await this.bookModel.findOne(id);
-    if (!book) throw new NotFoundException();
+    if (!book) throw new NotFoundException('Book not found');
     return book;
   }
 

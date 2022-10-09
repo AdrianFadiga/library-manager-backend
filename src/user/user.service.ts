@@ -1,6 +1,7 @@
 import {
   ConflictException,
   Injectable,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -21,6 +22,11 @@ export class UserService {
   private async verifyEmailInUse(email: string) {
     const emailInUse = await this.userModel.findByEmail(email);
     if (emailInUse) throw new ConflictException();
-    return;
+  }
+
+  async findOne(id: string) {
+    const user = this.userModel.findOne(id);
+    if (!user) throw new NotFoundException('User not found');
+    return user;
   }
 }
