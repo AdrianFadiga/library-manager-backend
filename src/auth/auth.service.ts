@@ -5,14 +5,14 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { AuthModel } from './auth.model';
+import { AuthRepository } from './auth.repository';
 import { AuthDto } from './dto/auth.dto';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private authModel: AuthModel,
+    private authRepository: AuthRepository,
     private jwt: JwtService,
     private config: ConfigService,
   ) {}
@@ -30,7 +30,7 @@ export class AuthService {
   }
 
   async findByEmail(email: string) {
-    const user = await this.authModel.findByEmail(email);
+    const user = await this.authRepository.findByEmail(email);
     if (!user) throw new NotFoundException('Email not found');
     return user;
   }

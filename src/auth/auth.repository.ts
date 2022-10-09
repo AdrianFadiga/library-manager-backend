@@ -3,7 +3,7 @@ import { DatabaseService } from 'src/database/database.service';
 import { AuthDto } from './dto/auth.dto';
 
 @Injectable()
-export class AuthModel {
+export class AuthRepository {
   constructor(private databaseService: DatabaseService) {}
 
   async signIn(authDto: AuthDto) {
