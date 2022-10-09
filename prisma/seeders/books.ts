@@ -9,6 +9,7 @@ async function main() {
       categoryId: '9837c100-9021-4f97-9ef6-8ec5fa35ba14',
       createdAt: new Date(),
       updatedAt: new Date(),
+      imageUrl: 'https://m.media-amazon.com/images/I/81ZswN9PVPL.jpg',
     },
     {
       id: 'e243499f-070a-4470-a70d-72fb3ab6b1d5',
@@ -16,6 +17,7 @@ async function main() {
       categoryId: 'db6c44ae-605f-484b-885c-fa610e6802e',
       createdAt: new Date(),
       updatedAt: new Date(),
+      imageUrl: 'https://m.media-amazon.com/images/I/91g9Dvtf+jL.jpg',
     },
   ];
 

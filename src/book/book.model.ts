@@ -6,9 +6,9 @@ import { CreateBookDto, UpdateBookDto } from './dto';
 export class BookModel {
   constructor(private databaseService: DatabaseService) {}
 
-  async create(createBookDto: CreateBookDto) {
+  async create(createBookDto: CreateBookDto, imageUrl: string) {
     return this.databaseService.book.create({
-      data: { ...createBookDto },
+      data: { ...createBookDto, imageUrl },
     });
   }
 
@@ -36,14 +36,18 @@ export class BookModel {
     });
   }
 
-  async update(id: string, updateBookDto: UpdateBookDto) {
+  async update(
+    id: string,
+    updateBookDto: UpdateBookDto,
+    imageUrl: string | undefined,
+  ) {
     return this.databaseService.book.update({
       where: { id },
-      data: { ...updateBookDto, updatedAt: new Date() },
+      data: { ...updateBookDto, updatedAt: new Date(), imageUrl },
     });
   }
 
-  async delete(id: string) {
+  async remove(id: string) {
     return this.databaseService.book.delete({
       where: { id },
     });
