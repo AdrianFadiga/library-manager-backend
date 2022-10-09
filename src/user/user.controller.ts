@@ -15,6 +15,8 @@ export class UserController {
     @GetUser() { role }: User,
     @Body() createUserDto: CreateUserDto,
   ) {
-    return this.userService.create(role, createUserDto);
+    const newUser = await this.userService.create(role, createUserDto);
+
+    return newUser;
   }
 }
