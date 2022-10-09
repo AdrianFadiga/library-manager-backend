@@ -42,28 +42,34 @@ export class BookController {
     { role }: User,
     @Body() createBookDto: CreateBookDto,
   ) {
-    return this.bookService.create(role, createBookDto, file);
+    const newBook = await this.bookService.create(role, createBookDto, file);
+
+    return newBook;
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     // Paginação
-    return this.bookService.findAll();
+    const allBooks = await this.bookService.findAll();
+
+    return allBooks;
   }
 
   @Get('/filter')
-  findOne(
+  async findOne(
     @Query('title') title: string,
     @Query('categoryId') categoryId: string,
   ) {
     if (title) return this.bookService.findByTitle(title);
+
     if (categoryId) return this.bookService.findByCategoryId(categoryId);
+
     throw new BadRequestException('Filter parameter is missing');
   }
 
   @Patch('/:id')
   @UseInterceptors(FileInterceptor('file'))
-  update(
+  async update(
     @UploadedFile(
       new ParseFilePipeBuilder()
         .addFileTypeValidator({ fileType: /(gif|jpe?g|tiff?|png|bmp)$/i })
@@ -77,7 +83,14 @@ export class BookController {
     @Param('id') id: string,
     @Body() updateBookDto: UpdateBookDto,
   ) {
-    return this.bookService.update(id, updateBookDto, role, file);
+    const updatedBook = await this.bookService.update(
+      id,
+      updateBookDto,
+      role,
+      file,
+    );
+
+    return updatedBook;
   }
 
   @Delete(':id')

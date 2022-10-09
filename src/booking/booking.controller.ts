@@ -5,7 +5,6 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
   UseGuards,
   Query,
 } from '@nestjs/common';
@@ -22,17 +21,23 @@ export class BookingController {
 
   @Post()
   async create(@Body() createBookingDto: CreateBookingDto) {
-    return this.bookingService.create(createBookingDto);
+    const createdBooking = await this.bookingService.create(createBookingDto);
+
+    return createdBooking;
   }
 
   @Get()
-  findAll() {
-    return this.bookingService.findAll();
+  async findAll() {
+    const allBookings = await this.bookingService.findAll();
+
+    return allBookings;
   }
 
   @Get('/me')
-  getMe(@GetUser() { id }: User, @Query('status') status: string) {
-    return this.bookingService.findByUserId(id, status);
+  async getMe(@GetUser() { id }: User, @Query('status') status: string) {
+    const myBookings = await this.bookingService.findByUserId(id, status);
+
+    return myBookings;
   }
 
   @Get(':id')
@@ -42,6 +47,8 @@ export class BookingController {
 
   @Patch('/:id')
   async update(@Param('id') id: string, @GetUser() { role }: User) {
-    return this.bookingService.update(id, role);
+    const updatedBooking = await this.bookingService.update(id, role);
+
+    return updatedBooking;
   }
 }

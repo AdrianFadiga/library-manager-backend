@@ -2,25 +2,31 @@ import { Injectable } from '@nestjs/common';
 import { DatabaseService } from 'src/database/database.service';
 
 @Injectable()
-export class CategoryModel {
+export class CategoryRepository {
   constructor(private databaseService: DatabaseService) {}
 
   async create(category: string) {
-    return this.databaseService.category.create({
+    const newCategory = await this.databaseService.category.create({
       data: {
         category,
       },
     });
+
+    return newCategory;
   }
 
   async findOne(id: string) {
-    return this.databaseService.category.findUnique({
+    const category = await this.databaseService.category.findUnique({
       where: { id },
     });
+
+    return category;
   }
 
   async findAll() {
-    return this.databaseService.category.findMany();
+    const categories = await this.databaseService.category.findMany();
+
+    return categories;
   }
 
   async findByCategory(category: string) {
@@ -30,10 +36,12 @@ export class CategoryModel {
   }
 
   async update(id: string, category: string) {
-    return this.databaseService.category.update({
+    const updatedCategory = await this.databaseService.category.update({
       where: { id },
       data: { category },
     });
+
+    return updatedCategory;
   }
 
   async delete(id: string) {

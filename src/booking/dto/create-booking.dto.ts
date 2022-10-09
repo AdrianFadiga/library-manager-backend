@@ -5,10 +5,12 @@ export class CreateBookingDto {
   @IsString()
   @IsDefined()
   userId: string;
+
   @IsUUID()
   @IsString()
   @IsDefined()
   bookId: string;
+
   @IsOptional()
   @IsIn(['active', 'finished'])
   status: string;

@@ -3,7 +3,7 @@ import { DatabaseService } from 'src/database/database.service';
 import { CreateUserDto } from './dto';
 
 @Injectable()
-export class UserModel {
+export class UserRepository {
   constructor(private databaseService: DatabaseService) {}
 
   async create(createUserDto: CreateUserDto) {

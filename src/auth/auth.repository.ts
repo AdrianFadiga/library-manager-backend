@@ -3,7 +3,7 @@ import { DatabaseService } from 'src/database/database.service';
 import { AuthDto } from './dto/auth.dto';
 
 @Injectable()
-export class AuthModel {
+export class AuthRepository {
   constructor(private databaseService: DatabaseService) {}
 
   async signIn(authDto: AuthDto) {
@@ -12,6 +12,7 @@ export class AuthModel {
         AND: [{ email: authDto.email }, { password: authDto.password }],
       },
     });
+
     return user;
   }
 
@@ -19,6 +20,7 @@ export class AuthModel {
     const user = await this.databaseService.user.findFirst({
       where: { email },
     });
+
     return user;
   }
 }
