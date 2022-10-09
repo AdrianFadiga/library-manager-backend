@@ -7,45 +7,56 @@ export class BookingRepository {
   constructor(private databaseService: DatabaseService) {}
 
   async create(createBookingDto: CreateBookingDto) {
-    return this.databaseService.booking.create({
+    const createdBooking = await this.databaseService.booking.create({
       data: { ...createBookingDto },
     });
+
+    return createdBooking;
   }
 
   async update(id: string) {
-    return this.databaseService.booking.update({
+    const updatedBooking = await this.databaseService.booking.update({
       where: { id },
       data: { status: 'finished', returnDate: new Date() },
     });
+
+    return updatedBooking;
   }
 
   async findOne(id: string) {
-    return this.databaseService.booking.findUnique({
+    const booking = await this.databaseService.booking.findUnique({
       where: { id },
     });
+
+    return booking;
   }
 
   async findByUserId(userId: string, status: string) {
-    return this.databaseService.booking.findMany({
+    const userBookings = await this.databaseService.booking.findMany({
       where: {
         AND: [{ userId }, { status }],
       },
     });
+
+    return userBookings;
   }
 
   async findByBookId(bookId: string, status: string) {
     // Decidi utilizar findMany pois, caso o status seja 'finished'
     // retornará um array com o histórico de locação do livro;
-    return this.databaseService.booking.findMany({
+    const bookBookings = await this.databaseService.booking.findMany({
       where: {
         AND: [{ bookId }, { status }],
       },
     });
+    return bookBookings;
   }
 
   async findByStatus(status: string) {
-    return this.databaseService.booking.findMany({
+    const bookings = await this.databaseService.booking.findMany({
       where: { status },
     });
+
+    return bookings;
   }
 }
