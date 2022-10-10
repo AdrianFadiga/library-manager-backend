@@ -8,7 +8,7 @@ async function main() {
       userId: '1072ac79-16d3-4dcf-8006-1275ea47d38f',
       bookId: 'e243499f-070a-4470-a70d-72fb3ab6b1d5',
       bookingDate: new Date(),
-      returnDate: new Date(),
+      returnDate: null,
       status: 'active',
     },
     {
