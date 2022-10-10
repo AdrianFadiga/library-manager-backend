@@ -94,9 +94,11 @@ export class BookingRepository {
     return bookBookings;
   }
 
-  async findAllByStatus(status: string) {
+  async findByQuery(status: string, bookId: string, userId: string) {
     const bookings = await this.databaseService.booking.findMany({
-      where: { status },
+      where: {
+        AND: [{ status }, { bookId }, { userId }],
+      },
       include: {
         book: {
           select: {

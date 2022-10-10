@@ -41,6 +41,16 @@ export class UserService {
     return users;
   }
 
+  async findAll(role: string) {
+    if (role !== 'admin') throw new UnauthorizedException();
+
+    const users = await this.userRepository.findAll();
+
+    users.map((user) => excludeField(user, 'password'));
+
+    return users;
+  }
+
   // async findOne(id: string) {
   //   const user = await this.userRepository.findOne(id);
   //   if (!user) throw new NotFoundException('User not found');

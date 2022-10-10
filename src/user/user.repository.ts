@@ -31,4 +31,10 @@ export class UserRepository {
 
     return users;
   }
+
+  async findAll() {
+    const users = await this.databaseService.user.findMany();
+
+    return users;
+  }
 }
