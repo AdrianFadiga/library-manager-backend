@@ -68,17 +68,27 @@ export class BookService {
   }
 
   async findByTitle(title: string) {
-    const book = await this.bookRepository.findByTitle(title);
-    if (!book) throw new NotFoundException('Book not found');
+    const books = await this.bookRepository.findByTitle(title);
+    // if (!books.length) throw new NotFoundException('Book not found');
 
-    return book;
+    return books;
   }
 
   async findByCategoryId(categoryId: string) {
     await this.verifyCategoryExists(categoryId);
 
-    const book = await this.bookRepository.findByCategoryId(categoryId);
-    return book;
+    const books = await this.bookRepository.findByCategoryId(categoryId);
+    return books;
+  }
+
+  async findByBookingStatus(status: string) {
+    if (status !== 'active' && status !== 'finished') {
+      throw new BadRequestException('Status must be "active" or "finished"');
+    }
+
+    const books = await this.bookRepository.findByBookingStatus(status);
+
+    return books;
   }
 
   async update(

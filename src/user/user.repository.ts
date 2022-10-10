@@ -23,4 +23,12 @@ export class UserRepository {
       where: { id },
     });
   }
+
+  async findByRole(role: string) {
+    const users = await this.databaseService.user.findMany({
+      where: { role },
+    });
+
+    return users;
+  }
 }

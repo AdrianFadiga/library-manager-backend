@@ -41,16 +41,17 @@ export class BookingService {
 
     await this.verifyBooked(bookId);
 
-    const newUser = await this.bookingRepository.create(createBookingDto);
-    return newUser;
+    const newBooking = await this.bookingRepository.create(createBookingDto);
+    return newBooking;
   }
 
-  findAll() {
-    return `This action returns all booking`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} booking`;
+  async findAllByStatus(role: string, status: string) {
+    if (role !== 'admin') throw new UnauthorizedException();
+    if (status !== 'active' && status !== 'finished') {
+      throw new BadRequestException('Status must be "active" or "finished"');
+    }
+    const bookings = await this.bookingRepository.findAllByStatus(status);
+    return bookings;
   }
 
   async findByUserId(id: string, status: string) {
@@ -76,5 +77,12 @@ export class BookingService {
 
     const updatedBooking = await this.bookingRepository.update(id);
     return updatedBooking;
+  }
+
+  async findAll(role: string) {
+    if (role !== 'admin') throw new UnauthorizedException();
+    const bookings = await this.bookingRepository.findAll();
+
+    return bookings;
   }
 }
