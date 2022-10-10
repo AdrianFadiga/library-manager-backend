@@ -57,13 +57,16 @@ export class BookController {
   }
 
   @Get('/filter')
-  async findOne(
+  async findByQuery(
     @Query('title') title: string,
     @Query('categoryId') categoryId: string,
+    @Query('status') status: string,
   ) {
     if (title) return this.bookService.findByTitle(title);
 
     if (categoryId) return this.bookService.findByCategoryId(categoryId);
+
+    if (status) return this.bookService.findByBookingStatus(status);
 
     throw new BadRequestException('Filter parameter is missing');
   }

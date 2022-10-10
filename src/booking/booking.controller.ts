@@ -27,8 +27,11 @@ export class BookingController {
   }
 
   @Get()
-  async findAll() {
-    const allBookings = await this.bookingService.findAll();
+  async findByStatus(
+    @GetUser() { role }: User,
+    @Query('status') status: string,
+  ) {
+    const allBookings = await this.bookingService.findByStatus(role, status);
 
     return allBookings;
   }

@@ -15,7 +15,7 @@ export class BookRepository {
   }
 
   async findAll() {
-    const allBooks = await this.databaseService.book.findMany({
+    const books = await this.databaseService.book.findMany({
       include: {
         bookings: {
           where: {
@@ -25,7 +25,21 @@ export class BookRepository {
       },
     });
 
-    return allBooks;
+    return books;
+  }
+
+  async findByBookingStatus(status: string) {
+    const books = await this.databaseService.book.findMany({
+      include: {
+        bookings: {
+          where: {
+            status,
+          },
+        },
+      },
+    });
+
+    return books;
   }
 
   async findOne(id: string) {

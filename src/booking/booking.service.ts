@@ -45,8 +45,13 @@ export class BookingService {
     return newUser;
   }
 
-  findAll() {
-    return `This action returns all booking`;
+  async findByStatus(role: string, status: string) {
+    if (role !== 'admin') throw new UnauthorizedException();
+    if (status !== 'active' && status !== 'finished') {
+      throw new BadRequestException('Status must be "active" or "finished"');
+    }
+    const bookings = await this.bookRepository.findByBookingStatus(status);
+    return bookings;
   }
 
   findOne(id: number) {
