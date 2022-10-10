@@ -7,11 +7,11 @@ export class BookingRepository {
   constructor(private databaseService: DatabaseService) {}
 
   async create(createBookingDto: CreateBookingDto) {
-    const createdBooking = await this.databaseService.booking.create({
+    const newBooking = await this.databaseService.booking.create({
       data: { ...createBookingDto },
     });
 
-    return createdBooking;
+    return newBooking;
   }
 
   async update(id: string) {
@@ -26,6 +26,20 @@ export class BookingRepository {
   async findOne(id: string) {
     const booking = await this.databaseService.booking.findUnique({
       where: { id },
+      include: {
+        book: {
+          select: {
+            title: true,
+            id: true,
+          },
+        },
+        user: {
+          select: {
+            name: true,
+            id: true,
+          },
+        },
+      },
     });
 
     return booking;
@@ -35,6 +49,20 @@ export class BookingRepository {
     const userBookings = await this.databaseService.booking.findMany({
       where: {
         AND: [{ userId }, { status }],
+      },
+      include: {
+        book: {
+          select: {
+            title: true,
+            id: true,
+          },
+        },
+        user: {
+          select: {
+            name: true,
+            id: true,
+          },
+        },
       },
     });
 
@@ -48,13 +76,62 @@ export class BookingRepository {
       where: {
         AND: [{ bookId }, { status }],
       },
+      include: {
+        book: {
+          select: {
+            title: true,
+            id: true,
+          },
+        },
+        user: {
+          select: {
+            name: true,
+            id: true,
+          },
+        },
+      },
     });
     return bookBookings;
   }
 
-  async findByStatus(status: string) {
+  async findAllByStatus(status: string) {
     const bookings = await this.databaseService.booking.findMany({
       where: { status },
+      include: {
+        book: {
+          select: {
+            title: true,
+            id: true,
+          },
+        },
+        user: {
+          select: {
+            name: true,
+            id: true,
+          },
+        },
+      },
+    });
+
+    return bookings;
+  }
+
+  async findAll() {
+    const bookings = await this.databaseService.booking.findMany({
+      include: {
+        book: {
+          select: {
+            title: true,
+            id: true,
+          },
+        },
+        user: {
+          select: {
+            name: true,
+            id: true,
+          },
+        },
+      },
     });
 
     return bookings;
