@@ -20,6 +20,13 @@ export class UserController {
     return newUser;
   }
 
+  @Get()
+  async findAll(@GetUser() { role }: User) {
+    const users = await this.userService.findAll(role);
+
+    return users;
+  }
+
   @Get('/filter')
   async findByRole(@Query('role') role: string) {
     const users = await this.userService.findByRole(role);
