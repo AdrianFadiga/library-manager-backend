@@ -19,12 +19,16 @@ export class AuthController {
   @UseGuards(JwtGuard)
   @Get('/me')
   async getMe(@GetUser() user: User) {
-    return user;
+    const userInfo = user;
+    // Deletar o password do usuario
+    return userInfo;
   }
 
   @Post('/signin')
   @HttpCode(200)
   async signIn(@Body() authDto: AuthDto) {
-    return this.authService.signIn(authDto);
+    const token = this.authService.signIn(authDto);
+
+    return token;
   }
 }

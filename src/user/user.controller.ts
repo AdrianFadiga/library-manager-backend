@@ -6,7 +6,7 @@ import { GetUser } from 'src/decorators';
 import { User } from '@prisma/client';
 
 @UseGuards(JwtGuard)
-@Controller('user')
+@Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -15,6 +15,8 @@ export class UserController {
     @GetUser() { role }: User,
     @Body() createUserDto: CreateUserDto,
   ) {
-    return this.userService.create(role, createUserDto);
+    const newUser = await this.userService.create(role, createUserDto);
+
+    return newUser;
   }
 }
