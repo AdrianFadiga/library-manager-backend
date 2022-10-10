@@ -20,6 +20,7 @@ import { CategoryRepository } from 'src/category/category.repository';
 export class BookService {
   constructor(
     private bookRepository: BookRepository,
+    // Acho que isso aqui não precisa mais
     @Inject(forwardRef(() => CategoryRepository))
     private categoryRepository: CategoryRepository,
   ) {}

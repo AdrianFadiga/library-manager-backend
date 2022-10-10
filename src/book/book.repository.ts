@@ -15,7 +15,15 @@ export class BookRepository {
   }
 
   async findAll() {
-    const allBooks = await this.databaseService.book.findMany();
+    const allBooks = await this.databaseService.book.findMany({
+      include: {
+        bookings: {
+          where: {
+            status: 'active',
+          },
+        },
+      },
+    });
 
     return allBooks;
   }
@@ -33,6 +41,13 @@ export class BookRepository {
   async findByTitle(title: string) {
     const books = await this.databaseService.book.findMany({
       where: { title: { contains: title, mode: 'insensitive' } },
+      include: {
+        bookings: {
+          where: {
+            status: 'active',
+          },
+        },
+      },
     });
 
     return books;
@@ -41,6 +56,13 @@ export class BookRepository {
   async findByCategoryId(categoryId: string) {
     const books = await this.databaseService.book.findMany({
       where: { categoryId },
+      include: {
+        bookings: {
+          where: {
+            status: 'active',
+          },
+        },
+      },
     });
 
     return books;
