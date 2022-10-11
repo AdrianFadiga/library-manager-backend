@@ -20,6 +20,7 @@ $ docker run --name postgres -e POSTGRES_PASSWORD=password -d -p 5432:5432 postg
 
 ```bash
 # development
+$ npm run db:restart
 $ npm run start
 ```
 
