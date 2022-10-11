@@ -27,13 +27,13 @@ export class BookingController {
   }
 
   @Get('/filter')
-  async findAllByStatus(
+  async findByQuery(
     @GetUser() { role }: User,
     @Query('status') status: string,
     @Query('bookId') bookId: string,
     @Query('userId') userId: string,
   ) {
-    const bookings = await this.bookingService.findAllByStatus(
+    const bookings = await this.bookingService.findByQuery(
       role,
       status,
       bookId,
