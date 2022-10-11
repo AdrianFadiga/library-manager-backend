@@ -1,6 +1,6 @@
 ## Description
 
-Projeto de controle de uma biblioteca.
+Library management application.
 
 ## Installation
 
