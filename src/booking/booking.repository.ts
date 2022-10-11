@@ -70,8 +70,6 @@ export class BookingRepository {
   }
 
   async findByBookId(bookId: string, status: string) {
-    // Decidi utilizar findMany pois, caso o status seja 'finished'
-    // retornará um array com o histórico de locação do livro;
     const bookBookings = await this.databaseService.booking.findMany({
       where: {
         AND: [{ bookId }, { status }],
