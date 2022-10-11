@@ -45,13 +45,7 @@ export class BookingService {
     return newBooking;
   }
 
-  async findByQuery(
-    role: string,
-    status: string,
-    bookId: string,
-    userId: string,
-  ) {
-    if (role !== 'admin') throw new UnauthorizedException();
+  async findByQuery(status: string, bookId: string, userId: string) {
     if (status !== 'active' && status !== 'finished') {
       throw new BadRequestException('Status must be "active" or "finished"');
     }

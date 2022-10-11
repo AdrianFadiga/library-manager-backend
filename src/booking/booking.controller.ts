@@ -28,13 +28,11 @@ export class BookingController {
 
   @Get('/filter')
   async findByQuery(
-    @GetUser() { role }: User,
     @Query('status') status: string,
     @Query('bookId') bookId: string,
     @Query('userId') userId: string,
   ) {
     const bookings = await this.bookingService.findByQuery(
-      role,
       status,
       bookId,
       userId,
@@ -47,8 +45,13 @@ export class BookingController {
   async getMeByStatus(
     @GetUser() { id }: User,
     @Query('status') status: string,
+    @Query('bookId') bookId: string,
   ) {
-    const myBookings = await this.bookingService.findByUserId(id, status);
+    const myBookings = await this.bookingService.findByQuery(
+      status,
+      bookId,
+      id,
+    );
 
     return myBookings;
   }
