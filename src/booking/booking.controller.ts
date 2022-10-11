@@ -21,28 +21,36 @@ export class BookingController {
 
   @Post()
   async create(@Body() createBookingDto: CreateBookingDto) {
-    const createdBooking = await this.bookingService.create(createBookingDto);
+    const newBooking = await this.bookingService.create(createBookingDto);
 
-    return createdBooking;
+    return newBooking;
   }
 
-  @Get()
-  async findAll() {
-    const allBookings = await this.bookingService.findAll();
+  @Get('/filter')
+  async findByQuery(
+    @GetUser() { role }: User,
+    @Query('status') status: string,
+    @Query('bookId') bookId: string,
+    @Query('userId') userId: string,
+  ) {
+    const bookings = await this.bookingService.findByQuery(
+      role,
+      status,
+      bookId,
+      userId,
+    );
 
-    return allBookings;
+    return bookings;
   }
 
-  @Get('/me')
-  async getMe(@GetUser() { id }: User, @Query('status') status: string) {
+  @Get('/me/filter')
+  async getMeByStatus(
+    @GetUser() { id }: User,
+    @Query('status') status: string,
+  ) {
     const myBookings = await this.bookingService.findByUserId(id, status);
 
     return myBookings;
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.bookingService.findOne(+id);
   }
 
   @Patch('/:id')
@@ -50,5 +58,12 @@ export class BookingController {
     const updatedBooking = await this.bookingService.update(id, role);
 
     return updatedBooking;
+  }
+
+  @Get('')
+  async findAll(@GetUser() { role }: User) {
+    const bookings = await this.bookingService.findAll(role);
+
+    return bookings;
   }
 }

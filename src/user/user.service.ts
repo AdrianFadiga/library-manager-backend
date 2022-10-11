@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   UnauthorizedException,
@@ -27,6 +28,27 @@ export class UserService {
     excludeField(newUser, 'password');
 
     return newUser;
+  }
+
+  async findByRole(role: string) {
+    const users = await this.userRepository.findByRole(role);
+    if (role !== 'admin' && role !== 'user') {
+      throw new BadRequestException('Role must be admin or user');
+    }
+
+    users.map((user) => excludeField(user, 'password'));
+
+    return users;
+  }
+
+  async findAll(role: string) {
+    if (role !== 'admin') throw new UnauthorizedException();
+
+    const users = await this.userRepository.findAll();
+
+    users.map((user) => excludeField(user, 'password'));
+
+    return users;
   }
 
   // async findOne(id: string) {
